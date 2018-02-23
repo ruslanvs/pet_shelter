@@ -21,7 +21,7 @@ let PetSchema = new mongoose.Schema( {
     type: { type: String, required: true, minlength: 3 },
     desc: { type: String, required: true, minlength: 3 },
     like: { type: Number, required: false },
-    skills: [{ skill: String }, {skill: String}, {skill: String}]
+    skills: [ String, String, String ] //>> try to improve
 
 }, { timestamps: true } );
 let Pet = mongoose.model( "Pet", PetSchema );
@@ -40,13 +40,21 @@ app.get( "/pets/:id", function( req, res ){
     })
 })
 
+app.post( "/pets", function( req, res ){
+    let pet = new Pet( req.body );
+    pet.save( function( err, data ){
+        if( err ){ res.json( { message: "Error", error: err } ) }
+        else{ res.json( { message: "Success", data: data } ) }
+    })
+})
+
 app.put( "/pets/:id", function( req, res ){
     Pet.update( { _id: req.params.id },{
         name: req.body.name,
         type: req.body.type,
         desc: req.body.desc,
         like: req.body.like,
-        skills: [ { skill: req.body.skill }, { skill: req.body.skill }, { skill: req.body.skill } ]
+        skills: [ req.body.skill1, req.body.skill2, req.body.skill3 ]
     })
 })
 
