@@ -1,3 +1,22 @@
-<p>
-  new works!
-</p>
+<h2>Know of a pet needing a home?</h2>
+<p>The pet must have a name</p>
+
+<form (submit) = "pets_create()">
+  <p>{{ new_pet | json }}</p>
+  <input type="text" name="new_pet.name" [(ngModel)]="new_pet.name" placeholder="name"/>
+  <br>
+  <input type="text" name="new_pet.type" [(ngModel)]="new_pet.type" placeholder="type"/>
+  <br>
+  <input type="text" name="new_pet.desc" [(ngModel)]="new_pet.desc" placeholder="desc"/>
+  <br>
+  <p>Skills:</p>
+  <input type="text" name="new_pet.skill1" [(ngModel)]="new_pet.skill1" placeholder="skill 1"/>
+  <br>
+  <input type="text" name="new_pet.skill2" [(ngModel)]="new_pet.skill2" placeholder="skill 2"/>
+  <br>
+  <input type="text" name="new_pet.skill3" [(ngModel)]="new_pet.skill3" placeholder="skill 3"/>
+  <br>
+  <input type="submit" value="Add Pet"/>
+  
+</form>
+<!-- <button [routerLink] = "['all']">Cancel</button> -->

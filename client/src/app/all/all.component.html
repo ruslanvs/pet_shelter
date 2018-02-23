@@ -1,3 +1,9 @@
-<p>
-  all works!
-</p>
+<hr>
+<div *ngFor="let pet of pets_all.data">
+  <p>Name: {{ pet.name }} Type: {{ pet.type }}</p>
+  <p>ID: {{ pet._id }}</p>
+  <!-- <button (click) = "pets_get_one( pet._id )">Details</button> -->
+  <button (click) = "details( pet._id )">Details Page</button>
+  <button (click) = "edit( pet._id )">Edit</button>
+  <hr>
+</div>

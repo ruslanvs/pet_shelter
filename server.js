@@ -21,7 +21,11 @@ let PetSchema = new mongoose.Schema( {
     type: { type: String, required: true, minlength: 3 },
     desc: { type: String, required: true, minlength: 3 },
     like: { type: Number, required: false },
-    skills: [ String, String, String ] //>> try to improve
+    skill1: { type: String, required: false },
+    skill2: { type: String, required: false },
+    skill3: { type: String, required: false },
+    
+    // skills: [ String, String, String ] //>> try to improve
 
 }, { timestamps: true } );
 let Pet = mongoose.model( "Pet", PetSchema );
@@ -54,7 +58,12 @@ app.put( "/pets/:id", function( req, res ){
         type: req.body.type,
         desc: req.body.desc,
         like: req.body.like,
-        skills: [ req.body.skill1, req.body.skill2, req.body.skill3 ]
+        skill1: req.body.skill1,
+        skill2: req.body.skill2,
+        skill3: req.body.skill3
+    }, function( err, data ){
+        if( err ){ res.json( { message: "Error", error: err } ) }
+        else{ res.json( { message: "Success", data: data } ) }
     })
 })
 

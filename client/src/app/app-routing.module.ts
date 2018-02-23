@@ -8,8 +8,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: "all", component: AllComponent },
-  { path: "details", component: DetailsComponent },
-  { path: "edit", component: EditComponent },
+  { path: "details/:id", component: DetailsComponent },
+  { path: "edit/:id", component: EditComponent },
   { path: "new", component: NewComponent },
   { path: "", pathMatch: "full", redirectTo: "" },
   { path: "**", redirectTo: "" }

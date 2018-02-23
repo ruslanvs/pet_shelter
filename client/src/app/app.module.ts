@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { MyServiceService } from "./my-service.service";
-import { HttpClientModule } from "@angular/common/http"
+import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { AllComponent } from './all/all.component';
 import { NewComponent } from './new/new.component';
@@ -29,7 +29,8 @@ import { DetailsComponent } from './details/details.component';
     FormsModule
   ],
   providers: [
-    MyServiceService
+    MyServiceService,
+    // AllComponent
   ],
   bootstrap: [
     AppComponent

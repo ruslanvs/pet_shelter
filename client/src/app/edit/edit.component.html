@@ -1,3 +1,21 @@
-<p>
-  edit works!
-</p>
+<h2>Edit this pet</h2>
+
+<form (submit) = "pets_update( pets_one )">
+  <p>{{ pets_one | json}}</p>
+  <input type="text" name="pets_one.name" [(ngModel)] = "pets_one.name" placeholder = "name"/>
+  <br>
+  <input type="text" name="pets_one.type" [(ngModel)] = "pets_one.type" placeholder = "type"/>
+  <br>
+  <input type="text" name="pets_one.desc" [(ngModel)] = "pets_one.desc" placeholder = "desc"/>
+  <br>
+  <input type="text" name="pets_one.skill1" [(ngModel)] = "pets_one.skill1" placeholder = "skill1"/>
+  <br>
+  <input type="text" name="pets_one.skill2" [(ngModel)] = "pets_one.skill2" placeholder = "skill2"/>
+  <br>
+  <input type="text" name="pets_one.skill3" [(ngModel)] = "pets_one.skill3" placeholder = "skill3"/>
+  <br>
+
+  <input type="submit" value="Save"/>
+
+
+</form>
