@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MyServiceService } from "./../my-service.service";
-// import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Router } from "@angular/router";
+import { DetailsComponent } from "./../details/details.component";
 
 
 @Component({
@@ -12,12 +12,12 @@ import { Router } from "@angular/router";
 export class AllComponent implements OnInit {
 
   pets_all = {};
-  // pets_one = {};
-  
+  clicked = {};
 
   constructor(
     private _myServiceService: MyServiceService,
-    private router: Router
+    private _router: Router,
+    private _detailsComponent: DetailsComponent,
   ){}
 
   ngOnInit() {
@@ -32,20 +32,24 @@ export class AllComponent implements OnInit {
     })
   }
 
-  // pets_get_one( id ){
-  //   let observable = this._myServiceService.pets_get_one( id );
-  //   observable.subscribe( data => {
-  //     this.pets_one = data;
-  //     console.log( "pets_get_one in details.component.ts:", this.pets_one );
-  //   })
-  // }
-
   details( id ){
-    this.router.navigate([`/details/${id}`]);
+    this._router.navigate([`/details/${id}`]);
   }
 
   edit( id ){
-    this.router.navigate([`/edit/${id}`]);
+    this._router.navigate([`/edit/${id}`]);
   }
 
+  pets_like( id ){ //>> good way to handle redundancy?
+    console.log( "pets_like in all.component.ts" );
+    this._detailsComponent.pets_like( id );
+    this.clicked[id] = true;//>> what whould be a better way?
+    console.log( "clicked in all.componenets", this.clicked );
+    this.pets_get()
+  }
+
+  pets_delete_one( id ){
+    this._detailsComponent.pets_delete_one( id );
+    this.pets_get()
+  }
 }

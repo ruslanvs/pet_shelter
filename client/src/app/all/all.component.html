@@ -1,9 +1,10 @@
 <hr>
 <div *ngFor="let pet of pets_all.data">
-  <p>Name: {{ pet.name }} Type: {{ pet.type }}</p>
-  <p>ID: {{ pet._id }}</p>
-  <!-- <button (click) = "pets_get_one( pet._id )">Details</button> -->
-  <button (click) = "details( pet._id )">Details Page</button>
+  <p>Name: {{ pet.name }} | Type: {{ pet.type }}</p>
+  <p>Likes: {{ pet.like }}</p>
+  <button (click) = "details( pet._id )">Details</button>
   <button (click) = "edit( pet._id )">Edit</button>
+  <button (click) = "pets_like( pet._id )" [disabled]="clicked[pet._id]">Like</button>
+  <button (click) = "pets_delete_one( pet._id )">Delete</button>
   <hr>
 </div>

@@ -16,25 +16,75 @@ mongoose.connect( "mongodb://localhost/pet_shelter" );
 
 let Schema = mongoose.Schema;
 
-let PetSchema = new mongoose.Schema( {
-    name: { type: String, required: true, minlength: 3 },
-    type: { type: String, required: true, minlength: 3 },
-    desc: { type: String, required: true, minlength: 3 },
-    like: { type: Number, required: false },
-    skill1: { type: String, required: false },
-    skill2: { type: String, required: false },
-    skill3: { type: String, required: false },
-    
-    // skills: [ String, String, String ] //>> try to improve
+let constraints = {
+    minlength: 3,
+    maxlength: 50,
 
+    name: {
+        type: String,
+        minlength: 3,
+        maxlength: 50,
+        required: true,
+        unique: true,
+    },
+
+    type: {
+        type: String,
+        minlength: 3,
+        maxlength: 50,
+        required: true,
+        unique: false,
+        
+    },
+
+    desc: {
+        type: String,
+        minlength: 3,
+        maxlength: 50,
+        required: true,
+        unique: false,
+    },
+
+    like: {
+        type: Number,
+    },
+
+    skills: {
+        type: String,
+        minlength: 3,
+        maxlength: 50,
+        required: false
+    },
+
+}
+
+let PetSchema = new mongoose.Schema( {
+    name: constraints.name,
+    type: constraints.type,
+    desc: constraints.desc,
+    like: constraints.like,
+    skill1: constraints.skills,
+    skill2: constraints.skills,
+    skill3: constraints.skills,
 }, { timestamps: true } );
+
+PetSchema.index( {//ensures uniqueness
+    name: 1,
+    // email: 1
+}, { unique: true } );
+
 let Pet = mongoose.model( "Pet", PetSchema );
+
+app.get( "/constraints", function( req, res ){
+    res.json( constraints );
+})
 
 app.get( "/pets", function( req, res ){
     Pet.find( {}, function( err, data ){
         if( err ){ res.json( { message: "Error", error: err } ) }
         else{ res.json( { message: "Success", data: data } ) }
-    });
+    })
+    .sort( "type" );
 })
 
 app.get( "/pets/:id", function( req, res ){
@@ -57,11 +107,17 @@ app.put( "/pets/:id", function( req, res ){
         name: req.body.name,
         type: req.body.type,
         desc: req.body.desc,
-        like: req.body.like,
         skill1: req.body.skill1,
         skill2: req.body.skill2,
         skill3: req.body.skill3
     }, function( err, data ){
+        if( err ){ res.json( { message: "Error", error: err } ) }
+        else{ res.json( { message: "Success", data: data } ) }
+    })
+})
+
+app.get( "/pets/:id/like", function( req, res ){
+    Pet.findOneAndUpdate( { _id: req.params.id }, {$inc: { like: 1 }}, function( err, data ){
         if( err ){ res.json( { message: "Error", error: err } ) }
         else{ res.json( { message: "Success", data: data } ) }
     })

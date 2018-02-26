@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MyServiceService } from "./../my-service.service";
-
+import { ActivatedRoute, Params, Router } from "@angular/router";
 
 @Component({
   selector: 'app-edit',
@@ -10,32 +10,60 @@ import { MyServiceService } from "./../my-service.service";
 export class EditComponent implements OnInit {
 
   pets_one = {};
-  
+  lim = {};
+  errors = {};
 
   constructor(
-    private _myServiceService: MyServiceService
-    
-  ) { }
+    private _myServiceService: MyServiceService,
+    private _route: ActivatedRoute,
+    private _router: Router,
+  ){}
 
-  ngOnInit() {
-    this.pets_get_one( "5a905b6541654b1509f5984f" );//>> fix
-    
+  ngOnInit(){
+    this.constraints();
+    this._route.params.subscribe( ( params: Params ) => {
+      console.log( "params id", params["id"] );
+      this.pets_get_one( params["id"] );
+    })
+  }
+
+  constraints(){
+    let observable = this._myServiceService.constraints()
+    observable.subscribe( data => {
+      this.lim = data
+    })
   }
 
   pets_get_one( id ){
     let observable = this._myServiceService.pets_get_one( id );
     observable.subscribe( data => {
       this.pets_one = data["data"][0];
-      console.log( "pets_get_one in details.component.ts:", this.pets_one );
+      // console.log( "pets_get_one in details.component.ts:", this.pets_one );
     })
   }
 
   pets_update( form_data ){
+    // console.log ( form_data._id )
     let observable = this._myServiceService.pets_update( form_data._id, form_data );
     observable.subscribe( data => {
-      console.log( "pets_update in edit.component.ts:", data );
+      if( "error" in data ){ this.errors_rend( data ) }
+      else{ this.details( form_data._id ) }
+      // console.log( "pets_update in edit.component.ts:", data );
+      // this.details( form_data._id );
     })
   }
 
+  details( id ){
+    // console.log( "home route" );
+    this._router.navigate( [`/details/${id}`] )
+  }
 
+  errors_rend( data ){
+    this.errors = this._myServiceService.errors_rend( data )
+  }
+
+  home(){
+    // console.log( "home route" );
+    this._router.navigate( ["/all"] )
+  }
 }

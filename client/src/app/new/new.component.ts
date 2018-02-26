@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MyServiceService } from "./../my-service.service";
-// import { AllComponent } from "./../all/all.component";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-new',
@@ -10,33 +10,40 @@ import { MyServiceService } from "./../my-service.service";
 export class NewComponent implements OnInit {
 
   new_pet = {};
-  pets_create_res = {};
+  lim = {};
+  errors = {};
 
   constructor(
     private _myServiceService: MyServiceService,
-    // private _allComponent: AllComponent
-  ) { }
+    private _router: Router,
+  ){}
 
   ngOnInit() {
+    this.constraints();
+  }
+
+  constraints(){
+    let observable = this._myServiceService.constraints()
+    observable.subscribe( data => {
+      this.lim = data
+    })
   }
 
   pets_create(){
+    // console.log( "pets.create", this.new_pet )
     let observable = this._myServiceService.pets_create( this.new_pet )
     observable.subscribe( data => {
-      this.pets_create_res = data
-      console.log( "pets_create in new.component.ts:", this.pets_create_res )
-      // this._allComponent.pets_get();
+      if( "error" in data ){ this.errors_rend( data ) }
+      else{ this.home() }
     })
-    this.new_pet = {
-      name: "",
-      type: "",
-      desc: "",
-      skill1: "",
-      skill2: "",
-      skill3: "",
-    }
-    
-    
   }
 
+  errors_rend( data ){
+    this.errors = this._myServiceService.errors_rend( data )
+  }
+
+  home(){
+    console.log( "home in new.component.ts");
+    this._router.navigate( ["/all"] );
+  }
 }

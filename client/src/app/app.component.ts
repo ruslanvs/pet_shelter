@@ -14,10 +14,11 @@ export class AppComponent implements OnInit {
   constructor( 
     private _myServiceService: MyServiceService,
     private _route: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
   ){}
 
-  ngOnInit(){}
+  ngOnInit(){
+  }
 
   doHome(){
     this._router.navigate( ["/home"] );

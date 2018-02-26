@@ -30,6 +30,7 @@ import { DetailsComponent } from './details/details.component';
   ],
   providers: [
     MyServiceService,
+    DetailsComponent,
     // AllComponent
   ],
   bootstrap: [

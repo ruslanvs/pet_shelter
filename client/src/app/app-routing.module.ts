@@ -7,11 +7,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  { path: "all", component: AllComponent },
+  // { path: "all", component: AllComponent },
+  { path: "", component: AllComponent },
   { path: "details/:id", component: DetailsComponent },
   { path: "edit/:id", component: EditComponent },
   { path: "new", component: NewComponent },
-  { path: "", pathMatch: "full", redirectTo: "" },
+  // { path: "", pathMatch: "full", redirectTo: "all" },
   { path: "**", redirectTo: "" }
 ];
 
