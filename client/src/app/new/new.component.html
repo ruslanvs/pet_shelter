@@ -21,7 +21,7 @@
     <a *ngIf="name.errors.required">Error: name must be filled out.</a>
     <a *ngIf="name.errors.minlength">Error: name should have at least {{ name.errors.minlength.requiredLength | json }} characters.</a>
   </a>
-  <a *ngIf="errors" class="error">{{ errors.name }}</a>
+  <a *ngIf="errors.name" class="error">{{ errors.name.message }}</a>
   <br>
 
   
@@ -47,7 +47,7 @@
     <a *ngIf="type.errors.required">Error: type must be filled out.</a>
     <a *ngIf="type.errors.minlength">Error: type should have at least {{ type.errors.minlength.requiredLength | json }} characters.</a>
   </a>
-  <a *ngIf="errors" class="error">{{ errors.type }}</a>
+  <a *ngIf="errors.type" class="error">{{ errors.type.message }}</a>
   <br>
   
   <input
@@ -64,15 +64,23 @@
     <a *ngIf="desc.errors.required">Error: description must be filled out.</a>
     <a *ngIf="desc.errors.minlength">Error: description should have at least {{ desc.errors.minlength.requiredLength | json }} characters.</a>
   </a>
-  <a *ngIf="errors" class="error">{{ errors.desc }}</a>
+  <a *ngIf="errors.desc" class="error">{{ errors.desc.message }}</a>
+  <br>
+
+  <input
+    type="text"
+    name="image_url"
+    [(ngModel)]="new_pet.image_url"
+    placeholder="image url"
+  />
   <br>
 
   <h3>Skills:</h3>
   <input
     type="text"
     name="skill1"
-    [(minlength)]="lim.str_min"
-    [(maxlength)]="lim.str_max"
+    [(minlength)]="lim.minlength"
+    [(maxlength)]="lim.maxlength"
     [(ngModel)]="new_pet.skill1"
     #skill1="ngModel"
     placeholder="skill"
@@ -87,8 +95,8 @@
   <input
     type="text"
     name="skill2"
-    [(minlength)]="lim.str_min"
-    [(maxlength)]="lim.str_max"
+    [(minlength)]="lim.minlength"
+    [(maxlength)]="lim.maxlength"
     [(ngModel)]="new_pet.skill2"
     #skill2="ngModel"
     placeholder="skill"
@@ -102,8 +110,8 @@
   <input
     type="text"
     name="skill3"
-    [(minlength)]="lim.str_min"
-    [(maxlength)]="lim.str_max"
+    [(minlength)]="lim.minlength"
+    [(maxlength)]="lim.maxlength"
     [(ngModel)]="new_pet.skill3"
     #skill3="ngModel"
     placeholder="skill"
@@ -114,6 +122,14 @@
   <a *ngIf="errors" class="error">{{ errors.skill3 }}</a>
   <br>
   
+  <input
+    type="text"
+    name="wiz"
+    [(ngModel)]="new_pet.wiz"
+    placeholder="wiz"
+  />
+  <br>
+
   <input type="submit" [disabled]="form_data.status == 'INVALID'" value="Add Pet"/>
   
 </form>

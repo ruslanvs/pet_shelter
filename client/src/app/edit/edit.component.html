@@ -1,5 +1,7 @@
 <h2>Edit this pet</h2>
 
+{{ lim.minlength }}
+{{ lim.maxlength }}
 <form (submit) = "pets_update( pets_one )" #form_data="ngForm">
   <!-- <p>{{ pets_one | json}}</p> -->
   <!-- Form data value: {{ form_data.status | json }} -->
@@ -30,7 +32,7 @@
     [(maxlength)]="lim.maxlength"
     [(ngModel)] = "pets_one.type"
     #type="ngModel"
-    placeholder = "type"
+    placeholder="type"
   />*
   <a *ngIf="type.touched && type.invalid" class="error">
     <a *ngIf="type.errors.required">Error: type must be filled out.</a>
@@ -58,6 +60,14 @@
 
   <input
     type="text"
+    name="image_url"
+    [(ngModel)]="pets_one.image_url"
+    placeholder="image url"
+  />
+  <br>
+
+  <input
+    type="text"
     name="skill1"
     [(minlength)]="lim.minlength"
     [(maxlength)]="lim.maxlength"
@@ -74,8 +84,8 @@
   <input
     type="text"
     name="skill2"
-    [(minlength)]="lim.str_min"
-    [(maxlength)]="lim.str_max"
+    [(minlength)]="lim.minlength"
+    [(maxlength)]="lim.maxlength"
     [(ngModel)]="pets_one.skill2"
     #skill2="ngModel"
     placeholder = "skill2"
@@ -89,8 +99,8 @@
   <input
     type="text"
     name="skill3"
-    [(minlength)]="lim.str_min"
-    [(maxlength)]="lim.str_max"
+    [(minlength)]="lim.minlength"
+    [(maxlength)]="lim.maxlength"
     [(ngModel)]="pets_one.skill3"
     #skill3="ngModel"
     placeholder = "skill3"
@@ -99,6 +109,14 @@
     <a *ngIf="skill3.errors.minlength">Error: a skill should have at least {{ skill3.errors.minlength.requiredLength | json }} characters.</a>
   </a>
   <a *ngIf="errors" class="error">{{ errors.skill3 }}</a>
+  <br>
+
+  <input
+    type="text"
+    name="wiz"
+    [(ngModel)]="pets_one.wiz"
+    placeholder="wiz"
+  />
   <br>
 
   <input type="submit" [disabled]="form_data.status == 'INVALID'" value="Save"/>

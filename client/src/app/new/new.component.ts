@@ -30,17 +30,21 @@ export class NewComponent implements OnInit {
   }
 
   pets_create(){
-    // console.log( "pets.create", this.new_pet )
+    console.log( "pets.create", this.new_pet )
     let observable = this._myServiceService.pets_create( this.new_pet )
     observable.subscribe( data => {
-      if( "error" in data ){ this.errors_rend( data ) }
+      // if( "error" in data ){ this.errors_rend( data ) }
+      if( "error" in data ){ 
+        this.errors = data["error"]["errors"]
+        console.log( "errors in new.component:", this.errors )
+       }
       else{ this.home() }
     })
   }
 
-  errors_rend( data ){
-    this.errors = this._myServiceService.errors_rend( data )
-  }
+  // errors_rend( data ){
+  //   this.errors = this._myServiceService.errors_rend( data )
+  // }
 
   home(){
     console.log( "home in new.component.ts");

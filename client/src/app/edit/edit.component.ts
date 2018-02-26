@@ -38,18 +38,15 @@ export class EditComponent implements OnInit {
     let observable = this._myServiceService.pets_get_one( id );
     observable.subscribe( data => {
       this.pets_one = data["data"][0];
-      // console.log( "pets_get_one in details.component.ts:", this.pets_one );
     })
   }
 
   pets_update( form_data ){
-    // console.log ( form_data._id )
+    console.log( form_data )
     let observable = this._myServiceService.pets_update( form_data._id, form_data );
     observable.subscribe( data => {
-      if( "error" in data ){ this.errors_rend( data ) }
+      if( "error" in data ){ this.errors = data["error"]["errors"] }
       else{ this.details( form_data._id ) }
-      // console.log( "pets_update in edit.component.ts:", data );
-      // this.details( form_data._id );
     })
   }
 
@@ -58,9 +55,9 @@ export class EditComponent implements OnInit {
     this._router.navigate( [`/details/${id}`] )
   }
 
-  errors_rend( data ){
-    this.errors = this._myServiceService.errors_rend( data )
-  }
+  // errors_rend( data ){
+  //   this.errors = this._myServiceService.errors_rend( data )
+  // }
 
   home(){
     // console.log( "home route" );

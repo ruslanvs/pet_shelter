@@ -5,6 +5,8 @@ let bodyParser = require( "body-parser" );
 let path = require( "path" );
 let mongoose = require( "mongoose" );
 
+let uniqueValidator = require('mongoose-unique-validator');
+
 mongoose.Promise = global.Promise;
 
 app.use( bodyParser.urlencoded( { extended: true } ) );
@@ -16,62 +18,74 @@ mongoose.connect( "mongodb://localhost/pet_shelter" );
 
 let Schema = mongoose.Schema;
 
-let constraints = {
-    minlength: 3,
-    maxlength: 50,
+let minlength = 3
+let maxlength = 50
 
-    name: {
+let constraints = {
+    minlength: minlength,
+    maxlength: maxlength,
+
+    str_r_u: {
         type: String,
-        minlength: 3,
-        maxlength: 50,
+        minlength: [minlength, "{PATH} should have at least {MINLENGTH} characters"],
+        maxlength: [maxlength, "{PATH} should have no more than {MAXLENGTH} characters"],
+        validate: {
+            validator: function( str ) {
+                return /^[a-zA-Z]+$/.test( str );
+            },
+            message: "What were you thinking?! {VALUE} is not a valid name, it must only have letters!"
+        },
+        // validate:
+        // [
+        //     {
+        //         validator: function( str ) {
+        //             return /^[a-zA-Z]+$/.test( str );
+        //         },
+        //         message: "What were you thinking?! {VALUE} is not a valid name, it must only have letters!"
+        //     },
+
+        //     {
+        //         validator: function( str ) {
+        //             return /^[0-9]+$/.test( str );
+        //         },
+        //         message: "What were you thinking?! {VALUE} is not a valid name, it must only have numbers!"
+        //     },
+        // ],
         required: true,
         unique: true,
     },
 
-    type: {
+    str_r: {
         type: String,
-        minlength: 3,
-        maxlength: 50,
+        minlength: minlength,
+        maxlength: maxlength,
         required: true,
-        unique: false,
-        
     },
 
-    desc: {
+    str: {
         type: String,
-        minlength: 3,
-        maxlength: 50,
-        required: true,
-        unique: false,
+        minlength: minlength,
+        maxlength: maxlength,
     },
 
     like: {
         type: Number,
     },
-
-    skills: {
-        type: String,
-        minlength: 3,
-        maxlength: 50,
-        required: false
-    },
-
 }
 
 let PetSchema = new mongoose.Schema( {
-    name: constraints.name,
-    type: constraints.type,
-    desc: constraints.desc,
+    name: constraints.str_r_u,
+    type: constraints.str_r,
+    desc: constraints.str_r,
     like: constraints.like,
-    skill1: constraints.skills,
-    skill2: constraints.skills,
-    skill3: constraints.skills,
+    image_url: String,
+    skill1: constraints.str,
+    skill2: constraints.str,
+    skill3: constraints.str,
+    wiz: Array,
 }, { timestamps: true } );
 
-PetSchema.index( {//ensures uniqueness
-    name: 1,
-    // email: 1
-}, { unique: true } );
+PetSchema.plugin( uniqueValidator, { message: '{PATH} {VALUE} is already registered in the shelter, please use a unique one'} );
 
 let Pet = mongoose.model( "Pet", PetSchema );
 
@@ -107,9 +121,11 @@ app.put( "/pets/:id", function( req, res ){
         name: req.body.name,
         type: req.body.type,
         desc: req.body.desc,
+        image_url: req.body.image_url,
         skill1: req.body.skill1,
         skill2: req.body.skill2,
-        skill3: req.body.skill3
+        skill3: req.body.skill3,
+        wiz: req.body.wiz
     }, function( err, data ){
         if( err ){ res.json( { message: "Error", error: err } ) }
         else{ res.json( { message: "Success", data: data } ) }
